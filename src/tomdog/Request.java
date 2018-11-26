@@ -19,6 +19,7 @@ public class Request {
 	private String queryString="";
 	private int contentLength=0;
 	private String method="GET";
+	private String path="";
 	
 	/**
 	 * 构造函数 接受来自客户端的输入流
@@ -36,6 +37,7 @@ public class Request {
             String requestHeader;
 			while((requestHeader=bd.readLine())!=null&&!requestHeader.isEmpty()){
 			    content+=requestHeader;
+			    System.out.println(requestHeader);
 			    /**
 			     * 获得GET参数
 			     */
@@ -45,6 +47,9 @@ public class Request {
 			        int end = requestHeader.indexOf("HTTP/");
 			        String condition=requestHeader.substring(begin, end);
 			        queryString=condition;
+			        
+			        path=getPath(requestHeader);
+			        
 			        addParametersToMap(condition);
 			    }else if(requestHeader.startsWith("POST")){
 			    	method="POST";
@@ -83,6 +88,15 @@ public class Request {
         } catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String getPath(String line){
+		return line.split(" ")[1].replaceFirst("/", "");	
+	}
+	
+	public static void main(String[] args){
+
+		System.out.println(getPath("GET http://127.0.0.1:8080/js/jquery-3.2.1.min.js HTTP/1.1"));
 	}
 	
 	/**
@@ -148,6 +162,15 @@ public class Request {
 	/**
 	 * 重写的object超父类的方法 返回来自客户端浏览器的纯raw代码
 	 */
+	
+	/**
+	 * 获取网页
+	 * @return
+	 */
+	
+	public String getPath(){
+		return path;
+	}
 	
 	@Override
 	public String toString(){

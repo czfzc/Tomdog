@@ -13,7 +13,13 @@ public abstract class App {
 	}
 	
 	public void doGet(Response response,Request request){
-		
+		htmlLoader hl=new htmlLoader(response.getWriter());
+		try{
+			hl.print(request.getPath());
+		}catch(Exception e){
+			e.printStackTrace();
+			response.sendRediret(404);
+		}
 	}
 	
 	public void doPost(Response response,Request request){

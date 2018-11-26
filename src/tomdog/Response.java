@@ -32,7 +32,7 @@ public class Response {
 	public Response(OutputStream outputstream){
 		printwriter=new PrintWriter(outputstream);
 		map.put("Server", "Tomdog/1.0.0");
-		map.put("Content-type", "text/html");
+		map.put("Content-type", "text/html;charset=UTF-8");
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class Response {
 	 * @param status
 	 */
 	
-	public void setStatus(int status){
+	private void setStatus(int status){
 		this.status=status;
 	}
 	
@@ -48,7 +48,7 @@ public class Response {
 	 *  此为私有方法 用来输出所有应该输出的内容 包括网页头 和网页内容 在app内输出任何东西之前执行 以保证让网页头在代码最前面
 	 */
 	
-	private void executeAll(){
+	protected void executeAll(){
 		printwriter.println("HTTP/1.1 "+status);
 		for(int i=0;i<list.size();i++){
 			printwriter.println(list.get(i));
@@ -142,5 +142,10 @@ public class Response {
 	
 	public void setContent(String content){
 		this.content=content;
+	}
+	
+	public void sendRediret(int code){
+		this.setStatus(code);
+		executeAll();
 	}
 }

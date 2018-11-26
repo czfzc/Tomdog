@@ -1,10 +1,12 @@
 package webapp;
 
+import java.io.File;
 import java.io.PrintWriter;
 
 import tomdog.App;
 import tomdog.Request;
 import tomdog.Response;
+import tomdog.htmlLoader;
 
 /**
  * 此为App的一个实例 即一个子类 实际的一个自定义网页App
@@ -19,12 +21,8 @@ public class test extends App{
 	
 	@Override
 	public void doGet(Response response,Request request){
-		super.doGet(response, request);
-		response.setContent("<h1>访问成功！</h1>");
 		response.setCookies("username","czfzc");
-		PrintWriter pw=response.getWriter();
-		pw.println("<h2>this is my test</h2>");
-		pw.flush();
+		super.doGet(response, request);
 	}
 	
 	@Override
