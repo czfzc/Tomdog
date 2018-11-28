@@ -13,16 +13,18 @@ public abstract class App {
 	}
 	
 	public void doGet(Response response,Request request){
-		htmlLoader hl=new htmlLoader(response.getWriter());
-		try{
-			hl.print(request.getPath());
-		}catch(Exception e){
-			e.printStackTrace();
-			response.sendRediret(404);
-		}
+		response.setPath(request.getPath());
+		response.executeAll();
 	}
 	
 	public void doPost(Response response,Request request){
 		doGet(response,request);
 	}
+	
+	/**
+	 * response与request之间通信
+	 * @param response
+	 * @param request
+	 */
+	
 }

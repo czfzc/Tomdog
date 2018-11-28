@@ -26,7 +26,6 @@ public class Init {
                 
                 Response response=new Response(socket.getOutputStream());
                 
-                
                 if(request.getMethod().equals("GET"))
                 	context.doGet(response, request);
                 else if(request.getMethod().equals("POST"))

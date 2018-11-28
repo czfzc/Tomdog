@@ -1,5 +1,7 @@
 package tomdog;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
@@ -24,6 +26,7 @@ public class Response {
 	private int status=200;
 	private String string="";
 	private String content="";
+	private String path="";
 
 	/**
 	 * 初始化构造函数 在构造函数内添加两个必须的头属性 一个说明当前Tomdog版本 另一个指定内容解释为html
@@ -32,7 +35,6 @@ public class Response {
 	public Response(OutputStream outputstream){
 		printwriter=new PrintWriter(outputstream);
 		map.put("Server", "Tomdog/1.0.0");
-		map.put("Content-type", "text/html;charset=UTF-8");
 	}
 	
 	/**
@@ -47,6 +49,23 @@ public class Response {
 	/**
 	 *  此为私有方法 用来输出所有应该输出的内容 包括网页头 和网页内容 在app内输出任何东西之前执行 以保证让网页头在代码最前面
 	 */
+
+	public void setPath(String path) {
+		if(path.contains(".css"))
+			map.put("Content-type", "text/css");
+		else if(path.contains(".js"))
+			map.put("Content-type", "application/javascript");
+		else map.put("Content-type", "text/html;charset=UTF-8");
+		try {
+			content=htmlLoader.getContent(path);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			this.sendRediret(404);
+		} catch (IOException e2) {
+			this.sendRediret(500);
+		}
+		
+	}
 	
 	protected void executeAll(){
 		printwriter.println("HTTP/1.1 "+status);
@@ -68,7 +87,6 @@ public class Response {
 	 */
 	
 	public PrintWriter getWriter(){
-		executeAll();
 		return printwriter;
 	}
 	
@@ -143,6 +161,7 @@ public class Response {
 	public void setContent(String content){
 		this.content=content;
 	}
+	
 	
 	public void sendRediret(int code){
 		this.setStatus(code);

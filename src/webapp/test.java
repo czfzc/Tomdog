@@ -23,6 +23,8 @@ public class test extends App{
 	public void doGet(Response response,Request request){
 		response.setCookies("username","czfzc");
 		super.doGet(response, request);
+		response.getWriter().println("");;
+		
 	}
 	
 	@Override
